@@ -1,0 +1,37 @@
+{% block content %}
+<h1>Welcome, {{ user.username }}</h1>
+
+<p><strong>Current Balance:</strong> €{{ user.balance }}</p>
+  <form action="{% url 'logout' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+  </form>
+<nav>
+    <a href="{% url 'deposit' %}">Deposit</a> |
+    <a href="{% url 'withdraw' %}">Withdraw</a> |
+    <a href="{% url 'transfer' %}">Transfer</a>
+</nav>
+
+<h2>Transaction History</h2>
+
+{% if transactions %}
+<ul>
+    {% for t in transactions %}
+    <li>
+        {{ t.transaction_type }}: €{{ t.amount }}
+
+        {% if t.recipient %}
+            to {{ t.recipient.username }}
+        {% endif %}
+
+        {% if t.note_decrypted %}
+            <p>Note: {{ t.note_decrypted|safe }}</p> <!-- INJECTION remove |safe-->
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No transactions yet.</p>
+{% endif %}
+
+{% endblock %}

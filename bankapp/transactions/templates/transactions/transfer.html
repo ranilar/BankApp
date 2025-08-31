@@ -1,0 +1,24 @@
+{% block content %}
+<h1>Transfer Funds</h1>
+
+<p>Current Balance: ${{ user.balance }}</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input type="hidden" name="sender" value="{{ user.username }}">
+
+    <label for="recipient">Recipient Username:</label>
+    <input type="text" name="recipient" id="recipient" required>
+
+    <label for="amount">Amount to Transfer:</label>
+    <input type="number" step="0.01" name="amount" id="amount" required>
+
+    <label for="note">Transaction Note:</label>
+    <textarea name="note" id="note"></textarea>
+
+    <button type="submit">Transfer</button>
+</form>
+
+<a href="{% url 'dashboard' %}">Back to Dashboard</a>
+{% endblock %}
